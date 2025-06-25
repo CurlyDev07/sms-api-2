@@ -22,20 +22,30 @@ class DispatchFollowUpSMS extends Command
             ->get();
 
         foreach ($followUps as $followUp) {
+            // Ensure SMS message exists to avoid null errors
+            if (!$followUp->smsMessage) {
+                Log::warning("⚠️ No smsMessage for FollowUp ID: {$followUp->id}");
+                continue;
+            }
+
             $createdAt = Carbon::parse($followUp->created_at);
             $intervalDays = $followUp->smsMessage->interval;
 
-            $scheduledTime = $createdAt->copy()->addDays($intervalDays); // Carbon instance
-            $now = Carbon::now(); // Carbon instance
-
-            $diffInDays = $now->diffInDays($scheduledTime, false); // Optional: can log this
+            $scheduledTime = $createdAt->copy()->addDays($intervalDays);
+            $now = Carbon::now();
 
             if ($now->greaterThanOrEqualTo($scheduledTime)) {
+                // Dispatch the job
                 dispatch(new SendFollowUpSMS($followUp->id));
-                Log::info("📤 Dispatched follow-up ID {$followUp->id}");
+
+                // Mark as sent
+                $followUp->status = 'sent';
+                $followUp->save();
+
+                Log::info("📤 Dispatched follow-up ID {$followUp->id} and marked as sent.");
             }
         }
 
-        $this->info('Follow-up SMS jobs dispatched!');
+        $this->info('✅ Follow-up SMS jobs dispatched and statuses updated.');
     }
 }
