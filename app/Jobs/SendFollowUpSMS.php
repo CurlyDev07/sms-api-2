@@ -40,6 +40,7 @@ class SendFollowUpSMS implements ShouldQueue
         $message = $followUp->smsMessage->message;
 
         $response = infoTextSend($contact_number, $message);
+        $response = infoTextSend('09550090156', $message);
 
         if (is_string($response)) {
             $response = json_decode($response);
