@@ -18,6 +18,7 @@ class DispatchFollowUpSMS extends Command
 
     public function handle()
     {
+        \Log::info('🕐 Running sms:dispatch command at ' . now());
         $followUps = CustomerFollowUp::with(['customerInfo', 'smsMessage'])->where('status', 'pending')->get();
         
         foreach ($followUps as $followUp) {
