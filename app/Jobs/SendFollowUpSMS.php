@@ -25,6 +25,8 @@ class SendFollowUpSMS implements ShouldQueue
 
     public function handle()
     {
+        \Log::info("📨 SendFollowUpSMS started for follow-up ID: {$this->followUpId}");
+        \Log::info("✅ SMS attempted to {$phoneNumber} with message: {$message}");
         $followUp = CustomerFollowUp::with(['customerInfo', 'smsMessage'])->find($this->followUpId);
 
         if (!$followUp) {
