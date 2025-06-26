@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\SmsController;
+use App\Http\Controllers\Api\StatisticController;
 
 
 
@@ -25,6 +26,12 @@ Route::delete('/delete-sms-message/{id}', [SmsController::class, 'delete_sms_mes
 
 Route::get('/get-customer-follow-up', [SmsController::class, 'get_customer_follow_up']);
 
+
+// |--------------------------------------------------------------------------
+// | STATISTICS
+// |--------------------------------------------------------------------------
+
+Route::get('/followups/statistics', [StatisticController::class, 'followUpStats']);
 
 
 
