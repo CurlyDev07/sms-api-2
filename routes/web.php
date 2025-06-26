@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-infoTextSend('09550090156', 'dasdas das test sms');
 
-    return view('welcome');
+
+    return redirect('https://matildasbeauty.com/MissTisa');
 });
