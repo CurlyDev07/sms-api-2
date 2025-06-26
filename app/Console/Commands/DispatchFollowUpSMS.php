@@ -31,14 +31,13 @@ class DispatchFollowUpSMS extends Command
             $createdAt = Carbon::parse($followUp->created_at);
             $intervalDays = $followUp->smsMessage->interval;
 
-            $scheduledTime = $createdAt->copy()->addDays($intervalDays);
-            $now = Carbon::now();
+            // Remove time from both dates by using toDateString()
+            $scheduledDate = $createdAt->addDays($intervalDays)->toDateString();
+            $currentDate = now()->toDateString();
 
-            if ($now->greaterThanOrEqualTo($scheduledTime)) {
-                // Dispatch the job
+            if ($currentDate >= $scheduledDate) {
                 dispatch(new SendFollowUpSMS($followUp->id));
 
-                // Mark as sent
                 $followUp->status = 'sent';
                 $followUp->save();
 
