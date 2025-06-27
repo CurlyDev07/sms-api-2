@@ -16,5 +16,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
 
 
-    return redirect('https://matildasbeauty.com/MissTisa');
+    return redirect('https://matildasbeauty.com/MissTisa', 301);
 });
